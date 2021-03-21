@@ -6,9 +6,9 @@ There is a "specification" for this field here: https://github.com/defunctzombie
 
 This repository is a collection of some tests for this feature. The tests are not necessarily comprehensive. But they are better than nothing.
 
-## Results
+## Positive Results
 
-Each test is considered successful if the bundle is generated without errors and if the resulting bundle runs the code `input.works = true`.
+These tests are expected to pass. Each test is considered successful if the bundle is generated without errors and if the resulting bundle runs the code `input.works = true`.
 
 <table>
 <tr><th>Test</th><th>browserify</th><th>webpack</th><th>esbuild</th><th>parcel</th><th>rollup</th></tr>
@@ -18,28 +18,52 @@ package.json:
   { "browser": { "./foo": "./file" } }
 file.js:
   input.works = true
-</pre></td><td>✅</td><td>🚫</td><td>🚫</td><td>🚫</td><td>✅</td></tr>
+</pre></td>
+<td>✅</td>
+<td>🚫</td>
+<td>🚫</td>
+<td>🚫</td>
+<td>✅</td>
+</tr>
 <tr><td><pre>entry.js:
   require('foo')
 package.json:
   { "browser": { "foo": "./file" } }
 file.js:
   input.works = true
-</pre></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
 <tr><td><pre>entry.js:
   require('./foo')
 package.json:
   { "browser": { "./foo": "./file" } }
 file.js:
   input.works = true
-</pre></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
 <tr><td><pre>entry.js:
   require('./foo')
 package.json:
   { "browser": { "foo": "./file" } }
 file.js:
   input.works = true
-</pre></td><td>🚫</td><td>✅</td><td>🚫</td><td>🚫</td><td>🚫</td></tr>
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>🚫</td>
+<td>🚫</td>
+</tr>
 <tr><td><pre>entry.js:
   require('pkg/foo/bar')
 node_modules/pkg/package.json:
@@ -48,7 +72,13 @@ node_modules/pkg/foo/bar.js:
   invalid syntax
 node_modules/pkg/file.js:
   input.works = true
-</pre></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>🚫</td></tr>
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
 <tr><td><pre>entry.js:
   require('pkg/foo/bar')
 node_modules/pkg/package.json:
@@ -57,21 +87,39 @@ node_modules/pkg/foo/bar.js:
   invalid syntax
 node_modules/pkg/file.js:
   input.works = true
-</pre></td><td>🚫</td><td>✅</td><td>🚫</td><td>🚫</td><td>🚫</td></tr>
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>🚫</td>
+<td>🚫</td>
+</tr>
 <tr><td><pre>entry.js:
   require('pkg/foo/bar')
 node_modules/pkg/package.json:
   { "browser": { "./foo/bar": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
-</pre></td><td>🚫</td><td>✅</td><td>🚫</td><td>✅</td><td>🚫</td></tr>
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
 <tr><td><pre>entry.js:
   require('pkg/foo/bar')
 node_modules/pkg/package.json:
   { "browser": { "foo/bar": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
-</pre></td><td>🚫</td><td>✅</td><td>🚫</td><td>🚫</td><td>🚫</td></tr>
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>🚫</td>
+<td>🚫</td>
+</tr>
 <tr><td><pre>entry.js:
   require('pkg')
 node_modules/pkg/index.js:
@@ -80,7 +128,13 @@ node_modules/pkg/package.json:
   { "browser": { "./foo/bar": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
-</pre></td><td>✅</td><td>🚫</td><td>🚫</td><td>🚫</td><td>✅</td></tr>
+</pre></td>
+<td>✅</td>
+<td>🚫</td>
+<td>🚫</td>
+<td>🚫</td>
+<td>✅</td>
+</tr>
 <tr><td><pre>entry.js:
   require('pkg')
 node_modules/pkg/index.js:
@@ -89,5 +143,85 @@ node_modules/pkg/package.json:
   { "browser": { "foo/bar": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
-</pre></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
 </table>
+
+## Negative Results
+
+These tests are expected to fail. Each test is considered a failure if the bundle is generated without errors and if the resulting bundle runs the code `input.works = true`.
+
+<table>
+<tr><th>Test</th><th>browserify</th><th>webpack</th><th>esbuild</th><th>parcel</th><th>rollup</th></tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/package.json:
+  { "browser": { ".": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('./foo.js')
+package.json:
+  { "browser": { "foo": "./file" } }
+index.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg/foo.js')
+node_modules/pkg/package.json:
+  { "browser": { "foo": "./file" } }
+node_modules/pkg/index.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('./foo.js')
+package.json:
+  { "browser": { "./foo": "./file" } }
+index.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg/foo.js')
+node_modules/pkg/package.json:
+  { "browser": { "./foo": "./file" } }
+node_modules/pkg/index.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</table>
+

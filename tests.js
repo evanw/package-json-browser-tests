@@ -1,4 +1,4 @@
-const tests = [
+const positiveTests = [
   {
     'entry.js': `require('foo')`,
     'package.json': `{ "browser": { "./foo": "./file" } }`,
@@ -55,6 +55,34 @@ const tests = [
   },
 ]
 
+const negativeTests = [
+  {
+    'entry.js': `require('pkg')`,
+    'node_modules/pkg/package.json': `{ "browser": { ".": "./file" } }`,
+    'node_modules/pkg/file.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('./foo.js')`,
+    'package.json': `{ "browser": { "foo": "./file" } }`,
+    'index.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg/foo.js')`,
+    'node_modules/pkg/package.json': `{ "browser": { "foo": "./file" } }`,
+    'node_modules/pkg/index.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('./foo.js')`,
+    'package.json': `{ "browser": { "./foo": "./file" } }`,
+    'index.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg/foo.js')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./foo": "./file" } }`,
+    'node_modules/pkg/index.js': `input.works = true`,
+  },
+]
+
 const fs = require('fs')
 const path = require('path')
 const browserify = require('browserify')
@@ -67,7 +95,6 @@ const pluginCommonJS = require('@rollup/plugin-commonjs')
 const inDir = path.join(__dirname, 'in')
 const outDir = path.join(__dirname, 'out')
 const parcelCacheDir = path.join(__dirname, '.parcel-cache')
-const results = []
 
 const bundlers = {
   browserify() {
@@ -158,6 +185,7 @@ const bundlers = {
     try {
       const bundle = await rollup.rollup({
         input: path.join(inDir, 'entry.js'),
+        onwarn: x => { throw new Error(x) },
         plugins: [
           pluginNodeResolve.default({
             browser: true,
@@ -196,10 +224,10 @@ function setup(test) {
 }
 
 async function run() {
-  let counter = 0
-
-  for (const test of tests) {
-    console.log(`Test ${counter++}`)
+  let positiveCounter = 0
+  const positiveResults = []
+  for (const test of positiveTests) {
+    console.log(`Positive test ${positiveCounter++}`)
     reset()
     setup(test)
     const result = { test }
@@ -210,36 +238,65 @@ async function run() {
       result[bundler] = !err
     }
 
-    results.push(result)
+    positiveResults.push(result)
+  }
+
+  let negativeCounter = 0
+  const negativeResults = []
+  for (const test of negativeTests) {
+    console.log(`Negative test ${negativeCounter++}`)
+    reset()
+    setup(test)
+    const result = { test }
+
+    for (const bundler in bundlers) {
+      const err = await bundlers[bundler]()
+      console.log(`  ${bundler}: ${err ? `✅` : '🚫 Unexpected success'}`)
+      result[bundler] = !!err
+    }
+
+    negativeResults.push(result)
   }
 
   reset()
 
-  const readmePath = path.join(__dirname, 'README.md')
-  const readmeText = fs.readFileSync(readmePath, 'utf8')
-  const index = readmeText.indexOf('## Results')
-  let text = readmeText.slice(0, index)
-  text += `## Results\n\n`
-  text += `Each test is considered successful if the bundle is generated without errors and if the resulting bundle runs the code \`input.works = true\`.\n\n`
-
-  text += `<table>\n`
-  text += `<tr><th>Test</th>`
-  for (const bundler in bundlers) {
-    text += `<th>${bundler}</th>`
-  }
-  text += `</tr>\n`
-  for (const result of results) {
-    text += `<tr><td><pre>`
-    for (const file in result.test) {
-      text += `${file}:\n  ${result.test[file]}\n`
-    }
-    text += `</pre></td>`
+  const printTable = results => {
+    text += `<table>\n`
+    text += `<tr><th>Test</th>`
     for (const bundler in bundlers) {
-      text += `<td>${result[bundler] ? '✅' : '🚫'}</td>`
+      text += `<th>${bundler}</th>`
     }
     text += `</tr>\n`
+    for (const result of results) {
+      text += `<tr><td><pre>`
+      for (const file in result.test) {
+        text += `${file}:\n  ${result.test[file]}\n`
+      }
+      text += `</pre></td>\n`
+      for (const bundler in bundlers) {
+        text += `<td>${result[bundler] ? '✅' : '🚫'}</td>\n`
+      }
+      text += `</tr>\n`
+    }
+    text += `</table>\n\n`
   }
-  text += `</table>\n`
+
+  const readmePath = path.join(__dirname, 'README.md')
+  const readmeText = fs.readFileSync(readmePath, 'utf8')
+  const index = readmeText.indexOf('## Positive Results')
+  let text = readmeText.slice(0, index)
+
+  text += `## Positive Results\n\n`
+  text += `These tests are expected to pass. Each test is considered successful ` +
+    `if the bundle is generated without errors and if the resulting bundle runs ` +
+    `the code \`input.works = true\`.\n\n`
+  printTable(positiveResults)
+
+  text += `## Negative Results\n\n`
+  text += `These tests are expected to fail. Each test is considered a failure ` +
+    `if the bundle is generated without errors and if the resulting bundle runs ` +
+    `the code \`input.works = true\`.\n\n`
+  printTable(negativeResults)
 
   fs.writeFileSync(readmePath, text)
 }
