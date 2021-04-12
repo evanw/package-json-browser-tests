@@ -86,6 +86,20 @@ const positiveTests = [
     'node_modules/pkg/package.json': `{ "main": "./main",\n  "browser": { "./main.js": "./file" } }`,
     'node_modules/pkg/file.js': `input.works = true`,
   },
+  {
+    'entry.js': `require('pkg')`,
+    'package.json': `{ "browser": { "pkg2": "pkg3" } }`,
+    'node_modules/pkg/index.js': `require('pkg2')`,
+    'node_modules/pkg/package.json': `{ "browser": { "pkg2": "./file" } }`,
+    'node_modules/pkg/file.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg')`,
+    'package.json': `{ "browser": { "pkg2": "pkg3" } }`,
+    'node_modules/pkg/index.js': `require('pkg2')`,
+    'node_modules/pkg2/index.js': `throw 'fail'`,
+    'node_modules/pkg3/index.js': `input.works = true`,
+  },
 ]
 
 const negativeTests = [
@@ -124,6 +138,14 @@ const negativeTests = [
     'entry.js': `require('pkg')`,
     'node_modules/pkg/package.json': `{ "main": "./main.js",\n  "browser": { "./main": "./file" } }`,
     'node_modules/pkg/file.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg')`,
+    'package.json': `{ "browser": { "pkg2": "pkg3" } }`,
+    'node_modules/pkg/index.js': `require('pkg2')`,
+    'node_modules/pkg/package.json': `{ "browser": {} }`,
+    'node_modules/pkg2/index.js': `throw 'fail'`,
+    'node_modules/pkg3/index.js': `input.works = true`,
   },
 ]
 
