@@ -150,6 +150,90 @@ node_modules/pkg/file.js:
 <td>✅</td>
 <td>✅</td>
 </tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/index.js:
+  throw 'fail'
+node_modules/pkg/package.json:
+  { "browser": { "./index.js": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/package.json:
+  { "browser": { "./index.js": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/index.js:
+  throw 'fail'
+node_modules/pkg/package.json:
+  { "browser": { "./index": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/package.json:
+  { "browser": { "./index": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/main.js:
+  throw 'fail'
+node_modules/pkg/package.json:
+  { "main": "./main", "browser": { "./main.js": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/package.json:
+  { "main": "./main", "browser": { "./main.js": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
 </table>
 
 ## Negative Results
@@ -215,6 +299,34 @@ index.js:
 node_modules/pkg/package.json:
   { "browser": { "./foo": "./file" } }
 node_modules/pkg/index.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/main.js:
+  throw 'fail'
+node_modules/pkg/package.json:
+  { "main": "./main.js", "browser": { "./main": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/package.json:
+  { "main": "./main.js", "browser": { "./main": "./file" } }
+node_modules/pkg/file.js:
   input.works = true
 </pre></td>
 <td>✅</td>
