@@ -11,7 +11,7 @@ This repository is a collection of some tests for this feature. The tests are no
 These tests are expected to pass. Each test is considered successful if the bundle is generated without errors and if the resulting bundle runs the code `input.works = true`.
 
 <table>
-<tr><th>Test</th><th>webpack</th><th>parcel</th><th>browserify</th><th>esbuild</th><th>rollup</th></tr>
+<tr><th>Test</th><th>esbuild</th><th>webpack</th><th>parcel</th><th>browserify</th><th>rollup</th></tr>
 <tr><td><pre>entry.js:
   require('foo')
 package.json:
@@ -19,10 +19,10 @@ package.json:
 file.js:
   input.works = true
 </pre></td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 <td>✅</td>
-<td>🚫</td>
 <td>✅</td>
 </tr>
 <tr><td><pre>entry.js:
@@ -59,7 +59,7 @@ file.js:
   input.works = true
 </pre></td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 <td>🚫</td>
@@ -89,7 +89,7 @@ node_modules/pkg/file.js:
   input.works = true
 </pre></td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 <td>🚫</td>
@@ -103,7 +103,7 @@ node_modules/pkg/file.js:
 </pre></td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 </tr>
@@ -115,7 +115,7 @@ node_modules/pkg/file.js:
   input.works = true
 </pre></td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 <td>🚫</td>
@@ -129,10 +129,10 @@ node_modules/pkg/package.json:
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 <td>✅</td>
-<td>🚫</td>
 <td>✅</td>
 </tr>
 <tr><td><pre>entry.js:
@@ -175,7 +175,7 @@ node_modules/pkg/file.js:
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 </tr>
 <tr><td><pre>entry.js:
@@ -189,7 +189,7 @@ node_modules/pkg/file.js:
 </pre></td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 </tr>
@@ -202,7 +202,7 @@ node_modules/pkg/file.js:
 </pre></td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 </tr>
@@ -218,8 +218,8 @@ node_modules/pkg/file.js:
 </pre></td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
 <td>✅</td>
+<td>🚫</td>
 <td>🚫</td>
 </tr>
 <tr><td><pre>entry.js:
@@ -232,7 +232,7 @@ node_modules/pkg/file.js:
 </pre></td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 </tr>
@@ -265,8 +265,8 @@ node_modules/pkg3/index.js:
   input.works = true
 </pre></td>
 <td>✅</td>
-<td>🚫</td>
 <td>✅</td>
+<td>🚫</td>
 <td>✅</td>
 <td>🚫</td>
 </tr>
@@ -281,17 +281,17 @@ node_modules/pkg/package.json:
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>
+<td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 <td>✅</td>
-<td>🚫</td>
 <td>✅</td>
 </tr>
 <tr><td>Percent handled:</td>
+<td>100.0%</td>
 <td>84.2%</td>
 <td>63.2%</td>
 <td>57.9%</td>
-<td>42.1%</td>
 <td>31.6%</td>
 </tr>
 </table>
@@ -301,7 +301,7 @@ node_modules/pkg/file.js:
 These tests are expected to fail. Each test is considered a failure if the bundle is generated without errors and if the resulting bundle runs the code `input.works = true`.
 
 <table>
-<tr><th>Test</th><th>webpack</th><th>parcel</th><th>browserify</th><th>esbuild</th><th>rollup</th></tr>
+<tr><th>Test</th><th>esbuild</th><th>webpack</th><th>parcel</th><th>browserify</th><th>rollup</th></tr>
 <tr><td><pre>entry.js:
   require('pkg')
 node_modules/pkg/package.json:
@@ -427,14 +427,14 @@ node_modules/pkg2/index.js:
 node_modules/pkg3/index.js:
   input.works = true
 </pre></td>
-<td>✅</td>
+<td>🚫</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
 </tr>
 <tr><td>Percent handled:</td>
-<td>100.0%</td>
+<td>88.9%</td>
 <td>100.0%</td>
 <td>100.0%</td>
 <td>100.0%</td>

@@ -176,121 +176,115 @@ const inDir = path.join(__dirname, 'in')
 const outDir = path.join(__dirname, 'out')
 const parcelCacheDir = path.join(__dirname, '.parcel-cache')
 
-function browserifyFn() {
-  return new Promise(resolve => {
-    browserify(path.join(inDir, 'entry.js')).bundle((err, out) => {
+const bundlers = {
+  browserify() {
+    return new Promise(resolve => {
+      browserify(path.join(inDir, 'entry.js')).bundle((err, out) => {
+        if (!err) {
+          try {
+            const input = {}
+            new Function('input', out)(input)
+            if (!input.works) throw new Error('Expected "works"')
+          } catch (e) {
+            err = e
+          }
+        }
+        resolve(err)
+      })
+    })
+  },
+
+  webpack() {
+    return new Promise(resolve => webpack({
+      entry: path.join(inDir, 'entry.js'),
+      output: {
+        path: outDir,
+        filename: 'result.js',
+      },
+    }, (err, stats) => {
+      if (!err && stats.hasErrors()) err = stats.toJson().errors[0]
       if (!err) {
         try {
           const input = {}
-          new Function('input', out)(input)
+          new Function('input', fs.readFileSync(path.join(outDir, 'result.js')))(input)
           if (!input.works) throw new Error('Expected "works"')
         } catch (e) {
           err = e
         }
       }
       resolve(err)
-    })
-  })
-}
+    }))
+  },
 
-function webpackFn() {
-  return new Promise(resolve => webpack({
-    entry: path.join(inDir, 'entry.js'),
-    output: {
-      path: outDir,
-      filename: 'result.js',
-    },
-  }, (err, stats) => {
-    if (!err && stats.hasErrors()) err = stats.toJson().errors[0]
-    if (!err) {
-      try {
-        const input = {}
-        new Function('input', fs.readFileSync(path.join(outDir, 'result.js')))(input)
-        if (!input.works) throw new Error('Expected "works"')
-      } catch (e) {
-        err = e
-      }
+  async esbuild() {
+    let err
+    try {
+      const result = await esbuild.build({
+        entryPoints: [path.join(inDir, 'entry.js')],
+        bundle: true,
+        write: false,
+        logLevel: 'silent',
+      })
+      const input = {}
+      new Function('input', result.outputFiles[0].text)(input)
+      if (!input.works) throw new Error('Expected "works"')
+    } catch (e) {
+      if (e && e.errors && e.errors[0]) e = new Error(e.errors[0].text)
+      err = e
     }
-    resolve(err)
-  }))
-}
+    return err
+  },
 
-async function esbuildFn() {
-  let err
-  try {
-    const result = await esbuild.build({
-      entryPoints: [path.join(inDir, 'entry.js')],
-      bundle: true,
-      write: false,
-      logLevel: 'silent',
-    })
-    const input = {}
-    new Function('input', result.outputFiles[0].text)(input)
-    if (!input.works) throw new Error('Expected "works"')
-  } catch (e) {
-    if (e && e.errors && e.errors[0]) e = new Error(e.errors[0].text)
-    err = e
-  }
-  return err
-}
+  async parcel() {
+    let err
+    try {
+      // Prevent parcel from messing with the console
+      require('@parcel/logger').patchConsole = () => 0
+      require('@parcel/logger').unpatchConsole = () => 0
+      await new parcel.default({
+        entries: path.join(inDir, 'entry.js'),
+        defaultConfig: require.resolve('@parcel/config-default'),
+        defaultTargetOptions: {
+          distDir: outDir,
+        },
+      }).run()
+      const input = {}
+      const globalObj = {} // Prevent parcel from messing with the global object
+      new Function('input', 'globalThis', 'self', 'window', 'global',
+        fs.readFileSync(path.join(outDir, 'entry.js'), 'utf8'))(
+          input, globalObj, globalObj, globalObj, globalObj)
+      if (!input.works) throw new Error('Expected "works"')
+    } catch (e) {
+      err = e
+    }
+    return err
+  },
 
-async function parcelFn() {
-  let err
-  try {
-    // Prevent parcel from messing with the console
-    require('@parcel/logger').patchConsole = () => 0
-    require('@parcel/logger').unpatchConsole = () => 0
-    await new parcel.default({
-      entries: path.join(inDir, 'entry.js'),
-      defaultConfig: require.resolve('@parcel/config-default'),
-      defaultTargetOptions: {
-        distDir: outDir,
-      },
-    }).run()
-    const input = {}
-    const globalObj = {} // Prevent parcel from messing with the global object
-    new Function('input', 'globalThis', 'self', 'window', 'global',
-      fs.readFileSync(path.join(outDir, 'entry.js'), 'utf8'))(
-        input, globalObj, globalObj, globalObj, globalObj)
-    if (!input.works) throw new Error('Expected "works"')
-  } catch (e) {
-    err = e
-  }
-  return err
-}
-
-async function rollupFn() {
-  let err
-  try {
-    const bundle = await rollup.rollup({
-      input: path.join(inDir, 'entry.js'),
-      onwarn: x => { throw new Error(x) },
-      plugins: [
-        pluginNodeResolve.default({
-          browser: true,
-        }),
-        pluginCommonJS(),
-      ],
-    })
-    const { output } = await bundle.generate({
-      format: 'iife',
-      name: 'name',
-    })
-    const input = {}
-    new Function('input', output[0].code)(input)
-    if (!input.works) throw new Error('Expected "works"')
-  } catch (e) {
-    err = e
-  }
-  return err
-}
-
-const bundlers = {
-  webpack: webpackFn,
-  parcel: parcelFn,
-  browserify: browserifyFn,
-  esbuild: esbuildFn,
-  rollup: rollupFn,
+  async rollup() {
+    let err
+    try {
+      const bundle = await rollup.rollup({
+        input: path.join(inDir, 'entry.js'),
+        onwarn: x => { throw new Error(x) },
+        plugins: [
+          pluginNodeResolve.default({
+            browser: true,
+          }),
+          pluginCommonJS(),
+        ],
+      })
+      const { output } = await bundle.generate({
+        format: 'iife',
+        name: 'name',
+      })
+      const input = {}
+      new Function('input', output[0].code)(input)
+      if (!input.works) throw new Error('Expected "works"')
+    } catch (e) {
+      err = e
+    }
+    return err
+  },
 }
 
 function reset() {
@@ -346,10 +340,18 @@ async function run() {
 
   reset()
 
+  const sortedBundlers = Object.keys(bundlers).map(bundler => {
+    let count = 0
+    for (const result of positiveResults)
+      if (result[bundler])
+        count++
+    return { bundler, count }
+  }).sort((a, b) => b.count - a.count).map(({ bundler }) => bundler)
+
   const printTable = results => {
     text += `<table>\n`
     text += `<tr><th>Test</th>`
-    for (const bundler in bundlers) {
+    for (const bundler of sortedBundlers) {
       text += `<th>${bundler}</th>`
     }
     text += `</tr>\n`
@@ -360,14 +362,14 @@ async function run() {
         text += `${file}:\n  ${result.test[file].replace(/\n/g, '\n  ')}\n`
       }
       text += `</pre></td>\n`
-      for (const bundler in bundlers) {
+      for (const bundler of sortedBundlers) {
         text += `<td>${result[bundler] ? '✅' : '🚫'}</td>\n`
         if (result[bundler]) counts[bundler] = (counts[bundler] | 0) + 1
       }
       text += `</tr>\n`
     }
     text += `<tr><td>Percent handled:</td>\n`
-    for (const bundler in bundlers) {
+    for (const bundler of sortedBundlers) {
       text += `<td>${(counts[bundler] / results.length * 100).toFixed(1)}%</td>\n`
     }
     text += `</tr>\n`
@@ -401,7 +403,7 @@ async function run() {
   }
 
   console.log(`Positive results:`)
-  for (const bundler in bundlers) {
+  for (const bundler of sortedBundlers) {
     let count = 0
     for (const result of positiveResults)
       if (result[bundler])
@@ -410,7 +412,7 @@ async function run() {
   }
 
   console.log(`Negative results:`)
-  for (const bundler in bundlers) {
+  for (const bundler of sortedBundlers) {
     let count = 0
     for (const result of negativeResults)
       if (result[bundler])
