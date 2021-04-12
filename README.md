@@ -6,7 +6,7 @@ There is a "specification" for this field here: https://github.com/defunctzombie
 
 This repository is a collection of some tests for this feature. The tests are not necessarily comprehensive. But they are better than nothing.
 
-## Positive Results
+## Tested for copy merge
 
 These tests are expected to pass. Each test is considered successful if the bundle is generated without errors and if the resulting bundle runs the code `input.works = true`.
 
