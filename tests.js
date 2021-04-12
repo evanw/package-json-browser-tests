@@ -392,6 +392,31 @@ async function run() {
   printTable(negativeResults)
 
   fs.writeFileSync(readmePath, text)
+
+  const width = Math.max(...Object.keys(bundlers).map(x => x.length))
+  const progress = fraction => {
+    const total = 64
+    const pos = Math.floor(fraction * total)
+    return '█'.repeat(pos) + '-'.repeat(total - pos) + ' ' + (fraction * 100).toFixed(1) + '%'
+  }
+
+  console.log(`Positive results:`)
+  for (const bundler in bundlers) {
+    let count = 0
+    for (const result of positiveResults)
+      if (result[bundler])
+        count++
+    console.log(`  ${(bundler + ':').padEnd(width + 1)} ${progress(count / positiveResults.length)}`)
+  }
+
+  console.log(`Negative results:`)
+  for (const bundler in bundlers) {
+    let count = 0
+    for (const result of negativeResults)
+      if (result[bundler])
+        count++
+    console.log(`  ${(bundler + ':').padEnd(width + 1)} ${progress(count / negativeResults.length)}`)
+  }
 }
 
 run()
