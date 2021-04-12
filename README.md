@@ -270,12 +270,29 @@ node_modules/pkg3/index.js:
 <td>✅</td>
 <td>🚫</td>
 </tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+package.json:
+  { "browser": { "pkg2": "pkg3" } }
+node_modules/pkg/index.js:
+  require('pkg2')
+node_modules/pkg/package.json:
+  { "browser": { "./pkg2": "./file" } }
+node_modules/pkg/file.js:
+  input.works = true
+</pre></td>
+<td>🚫</td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>✅</td>
+</tr>
 <tr><td>Percent handled:</td>
-<td>88.9%</td>
-<td>66.7%</td>
-<td>55.6%</td>
-<td>44.4%</td>
-<td>27.8%</td>
+<td>84.2%</td>
+<td>63.2%</td>
+<td>57.9%</td>
+<td>42.1%</td>
+<td>31.6%</td>
 </tr>
 </table>
 
@@ -388,6 +405,23 @@ node_modules/pkg/index.js:
   require('pkg2')
 node_modules/pkg/package.json:
   { "browser": {} }
+node_modules/pkg2/index.js:
+  throw 'fail'
+node_modules/pkg3/index.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+package.json:
+  { "browser": { "./pkg2": "pkg3" } }
+node_modules/pkg/index.js:
+  require('pkg2')
 node_modules/pkg2/index.js:
   throw 'fail'
 node_modules/pkg3/index.js:
