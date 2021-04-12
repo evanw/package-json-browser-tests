@@ -211,7 +211,8 @@ node_modules/pkg/file.js:
 node_modules/pkg/main.js:
   throw 'fail'
 node_modules/pkg/package.json:
-  { "main": "./main", "browser": { "./main.js": "./file" } }
+  { "main": "./main",
+    "browser": { "./main.js": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>
@@ -224,7 +225,8 @@ node_modules/pkg/file.js:
 <tr><td><pre>entry.js:
   require('pkg')
 node_modules/pkg/package.json:
-  { "main": "./main", "browser": { "./main.js": "./file" } }
+  { "main": "./main",
+    "browser": { "./main.js": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>
@@ -312,7 +314,8 @@ node_modules/pkg/index.js:
 node_modules/pkg/main.js:
   throw 'fail'
 node_modules/pkg/package.json:
-  { "main": "./main.js", "browser": { "./main": "./file" } }
+  { "main": "./main.js",
+    "browser": { "./main": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>
@@ -325,7 +328,8 @@ node_modules/pkg/file.js:
 <tr><td><pre>entry.js:
   require('pkg')
 node_modules/pkg/package.json:
-  { "main": "./main.js", "browser": { "./main": "./file" } }
+  { "main": "./main.js",
+    "browser": { "./main": "./file" } }
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>

@@ -78,12 +78,12 @@ const positiveTests = [
   {
     'entry.js': `require('pkg')`,
     'node_modules/pkg/main.js': `throw 'fail'`,
-    'node_modules/pkg/package.json': `{ "main": "./main", "browser": { "./main.js": "./file" } }`,
+    'node_modules/pkg/package.json': `{ "main": "./main",\n  "browser": { "./main.js": "./file" } }`,
     'node_modules/pkg/file.js': `input.works = true`,
   },
   {
     'entry.js': `require('pkg')`,
-    'node_modules/pkg/package.json': `{ "main": "./main", "browser": { "./main.js": "./file" } }`,
+    'node_modules/pkg/package.json': `{ "main": "./main",\n  "browser": { "./main.js": "./file" } }`,
     'node_modules/pkg/file.js': `input.works = true`,
   },
 ]
@@ -117,12 +117,12 @@ const negativeTests = [
   {
     'entry.js': `require('pkg')`,
     'node_modules/pkg/main.js': `throw 'fail'`,
-    'node_modules/pkg/package.json': `{ "main": "./main.js", "browser": { "./main": "./file" } }`,
+    'node_modules/pkg/package.json': `{ "main": "./main.js",\n  "browser": { "./main": "./file" } }`,
     'node_modules/pkg/file.js': `input.works = true`,
   },
   {
     'entry.js': `require('pkg')`,
-    'node_modules/pkg/package.json': `{ "main": "./main.js", "browser": { "./main": "./file" } }`,
+    'node_modules/pkg/package.json': `{ "main": "./main.js",\n  "browser": { "./main": "./file" } }`,
     'node_modules/pkg/file.js': `input.works = true`,
   },
 ]
@@ -314,7 +314,7 @@ async function run() {
     for (const result of results) {
       text += `<tr><td><pre>`
       for (const file in result.test) {
-        text += `${file}:\n  ${result.test[file]}\n`
+        text += `${file}:\n  ${result.test[file].replace(/\n/g, '\n  ')}\n`
       }
       text += `</pre></td>\n`
       for (const bundler in bundlers) {
