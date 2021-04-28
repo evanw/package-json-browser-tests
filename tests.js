@@ -107,6 +107,37 @@ const positiveTests = [
     'node_modules/pkg/package.json': `{ "browser": { "./pkg2": "./file" } }`,
     'node_modules/pkg/file.js': `input.works = true`,
   },
+  {
+    'entry.js': `require('pkg/dir')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./dir/index": "./file" } }`,
+    'node_modules/pkg/file.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg/dir')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./dir/index.js": "./file" } }`,
+    'node_modules/pkg/file.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg/dir')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./dir/index": "./file" } }`,
+    'node_modules/pkg/dir/index.js': `input.works = true`,
+    'node_modules/pkg/file.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg/dir')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./dir/index.js": "./file" } }`,
+    'node_modules/pkg/dir/index.js': `input.works = true`,
+    'node_modules/pkg/file.js': `input.works = true`,
+  },
+  {
+    'entry.js': `require('pkg')`,
+    'package.json': `{ "browser": { "./index.js": "./fail.js" } }`,
+    'fail.js': `throw 'fail'`,
+    'node_modules/pkg/main.js': `require('./lib')`,
+    'node_modules/pkg/package.json': `{ "main": "main.js" }`,
+    'node_modules/pkg/lib/index.js': `input.works = true`,
+    'node_modules/pkg/lib/fail.js': `throw 'fail'`,
+  },
 ]
 
 const negativeTests = [
