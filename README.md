@@ -294,7 +294,7 @@ node_modules/pkg/package.json:
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>✅</td>
 <td>🚫</td>
@@ -307,7 +307,7 @@ node_modules/pkg/package.json:
 node_modules/pkg/file.js:
   input.works = true
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>✅</td>
 <td>🚫</td>
@@ -358,14 +358,14 @@ node_modules/pkg/lib/index.js:
 node_modules/pkg/lib/fail.js:
   throw 'fail'
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>🚫</td>
 </tr>
 <tr><td>Percent handled:</td>
-<td>87.5%</td>
+<td>100.0%</td>
 <td>79.2%</td>
 <td>66.7%</td>
 <td>62.5%</td>
@@ -504,14 +504,14 @@ node_modules/pkg2/index.js:
 node_modules/pkg3/index.js:
   input.works = true
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
 </tr>
 <tr><td>Percent handled:</td>
-<td>88.9%</td>
+<td>100.0%</td>
 <td>100.0%</td>
 <td>100.0%</td>
 <td>100.0%</td>
