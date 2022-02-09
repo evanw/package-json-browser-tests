@@ -364,15 +364,15 @@ node_modules/pkg/lib/fail.js:
 <td>✅</td>
 <td>🚫</td>
 </tr>
-<tr><td><pre>/entry.js:
+<tr><td><pre>entry.js:
   require('pkg/sub')
-/node_modules/pkg/package.json:
+node_modules/pkg/package.json:
   { "browser": { "./sub": "./sub/foo.js" } }
-/node_modules/pkg/sub/foo.js:
+node_modules/pkg/sub/foo.js:
   require('sub')
-/node_modules/sub/package.json:
+node_modules/sub/package.json:
   { "main": "./bar" }
-/node_modules/sub/bar.js:
+node_modules/sub/bar.js:
   input.works = true
 </pre></td>
 <td>🚫</td>
@@ -381,13 +381,16 @@ node_modules/pkg/lib/fail.js:
 <td>✅</td>
 <td>🚫</td>
 </tr>
-<tr><td><pre>/entry.js:
+<tr><td><pre>entry.js:
   require('pkg/sub')
-/node_modules/pkg/package.json:
-  { "browser": { "./sub": "./sub/foo.js", "./sub/sub": "./sub/bar.js" } }
-/node_modules/pkg/sub/foo.js:
+node_modules/pkg/package.json:
+  { "browser": {
+    "./sub": "./sub/foo.js",
+    "./sub/sub": "./sub/bar.js"
+  } }
+node_modules/pkg/sub/foo.js:
   require('sub')
-/node_modules/pkg/sub/bar.js:
+node_modules/pkg/sub/bar.js:
   input.works = true
 </pre></td>
 <td>🚫</td>
