@@ -390,7 +390,7 @@ node_modules/sub/package.json:
 node_modules/sub/bar.js:
   input.works = true
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
@@ -408,14 +408,14 @@ node_modules/pkg/sub/foo.js:
 node_modules/pkg/sub/bar.js:
   input.works = true
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>🚫</td>
 <td>✅</td>
 <td>🚫</td>
 <td>🚫</td>
 </tr>
 <tr><td>Percent handled:</td>
-<td>92.6%</td>
+<td>100.0%</td>
 <td>77.8%</td>
 <td>70.4%</td>
 <td>63.0%</td>
