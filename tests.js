@@ -138,6 +138,19 @@ const positiveTests = [
     'node_modules/pkg/lib/index.js': `input.works = true`,
     'node_modules/pkg/lib/fail.js': `throw 'fail'`,
   },
+  {
+    "/entry.js": `require('pkg/sub')`,
+    "/node_modules/pkg/package.json": `{ "browser": { "./sub": "./sub/index.js" } }`,
+    "/node_modules/pkg/sub/index.js": `require('sub')`,
+    "/node_modules/sub/index.js": `input.works = true`,
+  },
+  {
+
+    "/entry.js": `require('pkg/sub')`,
+    "/node_modules/pkg/package.json": `{ "browser": { "./sub": "./sub/index.js" } }`,
+    "/node_modules/pkg/sub/index.js": `require('sub2')`,
+    "/node_modules/sub2/index.js": `input.works = true`,
+  },
 ]
 
 const negativeTests = [
