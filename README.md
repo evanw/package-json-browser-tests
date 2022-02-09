@@ -367,39 +367,26 @@ node_modules/pkg/lib/fail.js:
 <tr><td><pre>/entry.js:
   require('pkg/sub')
 /node_modules/pkg/package.json:
-  { "browser": { "./sub": "./sub/index.js" } }
-/node_modules/pkg/sub/index.js:
+  { "browser": { "./sub": "./sub/foo.js" } }
+/node_modules/pkg/sub/foo.js:
   require('sub')
-/node_modules/sub/index.js:
+/node_modules/sub/package.json:
+  { "main": "./bar" }
+/node_modules/sub/bar.js:
   input.works = true
 </pre></td>
 <td>🚫</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
-<td>✅</td>
-</tr>
-<tr><td><pre>/entry.js:
-  require('pkg/sub')
-/node_modules/pkg/package.json:
-  { "browser": { "./sub": "./sub/index.js" } }
-/node_modules/pkg/sub/index.js:
-  require('sub2')
-/node_modules/sub2/index.js:
-  input.works = true
-</pre></td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
+<td>🚫</td>
 </tr>
 <tr><td>Percent handled:</td>
-<td>96.2%</td>
-<td>80.8%</td>
-<td>69.2%</td>
-<td>65.4%</td>
-<td>30.8%</td>
+<td>96.0%</td>
+<td>80.0%</td>
+<td>68.0%</td>
+<td>64.0%</td>
+<td>24.0%</td>
 </tr>
 </table>
 
