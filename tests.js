@@ -139,17 +139,17 @@ const positiveTests = [
     'node_modules/pkg/lib/fail.js': `throw 'fail'`,
   },
   {
-    "/entry.js": `require('pkg/sub')`,
-    "/node_modules/pkg/package.json": `{ "browser": { "./sub": "./sub/foo.js" } }`,
-    "/node_modules/pkg/sub/foo.js": `require('sub')`,
-    "/node_modules/sub/package.json": `{ "main": "./bar" }`,
-    "/node_modules/sub/bar.js": `input.works = true`,
+    'entry.js': `require('pkg/sub')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./sub": "./sub/foo.js" } }`,
+    'node_modules/pkg/sub/foo.js': `require('sub')`,
+    'node_modules/sub/package.json': `{ "main": "./bar" }`,
+    'node_modules/sub/bar.js': `input.works = true`,
   },
   {
-    "/entry.js": `require('pkg/sub')`,
-    "/node_modules/pkg/package.json": `{ "browser": { "./sub": "./sub/foo.js", "./sub/sub": "./sub/bar.js" } }`,
-    "/node_modules/pkg/sub/foo.js": `require('sub')`,
-    "/node_modules/pkg/sub/bar.js": `input.works = true`,
+    'entry.js': `require('pkg/sub')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./sub": "./sub/foo.js", "./sub/sub": "./sub/bar.js" } }`,
+    'node_modules/pkg/sub/foo.js': `require('sub')`,
+    'node_modules/pkg/sub/bar.js': `input.works = true`,
   },
 ]
 
