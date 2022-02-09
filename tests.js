@@ -139,6 +139,12 @@ const positiveTests = [
     'node_modules/pkg/lib/fail.js': `throw 'fail'`,
   },
   {
+    'entry.js': `require('pkg')`,
+    'node_modules/pkg/package.json': `{ "browser": { "./foo/bar.js": "./foo/baz" } }`,
+    'node_modules/pkg/index.js': `require('./foo/bar')`,
+    'node_modules/pkg/foo/baz.js': `input.works = true`,
+  },
+  {
     'entry.js': `require('pkg/sub')`,
     'node_modules/pkg/package.json': `{ "browser": { "./sub": "./sub/foo.js" } }`,
     'node_modules/pkg/sub/foo.js': `require('sub')`,

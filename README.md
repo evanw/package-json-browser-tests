@@ -365,6 +365,21 @@ node_modules/pkg/lib/fail.js:
 <td>🚫</td>
 </tr>
 <tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/package.json:
+  { "browser": { "./foo/bar.js": "./foo/baz" } }
+node_modules/pkg/index.js:
+  require('./foo/bar')
+node_modules/pkg/foo/baz.js:
+  input.works = true
+</pre></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
   require('pkg/sub')
 node_modules/pkg/package.json:
   { "browser": { "./sub": "./sub/foo.js" } }
@@ -400,11 +415,11 @@ node_modules/pkg/sub/bar.js:
 <td>🚫</td>
 </tr>
 <tr><td>Percent handled:</td>
-<td>92.3%</td>
-<td>76.9%</td>
-<td>69.2%</td>
-<td>61.5%</td>
-<td>23.1%</td>
+<td>92.6%</td>
+<td>77.8%</td>
+<td>70.4%</td>
+<td>63.0%</td>
+<td>22.2%</td>
 </tr>
 </table>
 
