@@ -426,7 +426,7 @@ node_modules/pkg/sub/foo.js:
 node_modules/sub/index.js:
   input.works = true
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
@@ -470,14 +470,14 @@ node_modules/pkg/sub/bat.js:
 node_modules/baz/index.js:
   input.works = true
 </pre></td>
-<td>🚫</td>
+<td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
 <td>🚫</td>
 </tr>
 <tr><td>Percent handled:</td>
-<td>93.3%</td>
+<td>100.0%</td>
 <td>76.7%</td>
 <td>73.3%</td>
 <td>63.3%</td>

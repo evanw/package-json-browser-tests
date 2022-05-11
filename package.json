@@ -4,7 +4,7 @@
     "@rollup/plugin-commonjs": "22.0.0",
     "@rollup/plugin-node-resolve": "13.3.0",
     "browserify": "17.0.0",
-    "esbuild": "0.14.38",
+    "esbuild": "0.14.39",
     "parcel": "2.5.0",
     "rollup": "2.72.1",
     "webpack": "5.72.1",
