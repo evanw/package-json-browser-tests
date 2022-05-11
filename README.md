@@ -77,7 +77,7 @@ node_modules/pkg/file.js:
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 </tr>
 <tr><td><pre>entry.js:
   require('pkg/foo/bar')
@@ -163,7 +163,7 @@ node_modules/pkg/file.js:
 <td>✅</td>
 <td>✅</td>
 <td>✅</td>
-<td>🚫</td>
+<td>✅</td>
 </tr>
 <tr><td><pre>entry.js:
   require('pkg')
@@ -285,7 +285,7 @@ node_modules/pkg/file.js:
 <td>🚫</td>
 <td>✅</td>
 <td>🚫</td>
-<td>✅</td>
+<td>🚫</td>
 </tr>
 <tr><td><pre>entry.js:
   require('pkg/dir')
@@ -419,7 +419,7 @@ node_modules/pkg/sub/bar.js:
 <td>77.8%</td>
 <td>70.4%</td>
 <td>63.0%</td>
-<td>22.2%</td>
+<td>25.9%</td>
 </tr>
 </table>
 
