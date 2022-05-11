@@ -414,12 +414,74 @@ node_modules/pkg/sub/bar.js:
 <td>🚫</td>
 <td>🚫</td>
 </tr>
+<tr><td><pre>entry.js:
+  require('pkg/sub')
+node_modules/pkg/package.json:
+  { "browser": {
+    "./sub": "./sub/foo.js",
+    "./sub/sub.js": "./sub/bar.js"
+  } }
+node_modules/pkg/sub/foo.js:
+  require('sub')
+node_modules/sub/index.js:
+  input.works = true
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/index.js:
+  require("./sub/foo")
+node_modules/pkg/sub/bar.js:
+  require("baz")
+node_modules/pkg/package.json:
+  { "browser": {
+    "./sub/foo": "./sub/bar.js",
+    "./sub/baz": "./sub/bat.js"
+  } }
+node_modules/pkg/sub/bat.js:
+  input.works = true
+node_modules/baz/index.js:
+  invalid syntax
+</pre></td>
+<td>✅</td>
+<td>🚫</td>
+<td>✅</td>
+<td>🚫</td>
+<td>🚫</td>
+</tr>
+<tr><td><pre>entry.js:
+  require('pkg')
+node_modules/pkg/index.js:
+  require("./sub/foo")
+node_modules/pkg/sub/bar.js:
+  require("baz")
+node_modules/pkg/package.json:
+  { "browser": {
+    "./sub/foo.js": "./sub/bar.js",
+    "./sub/baz.js": "./sub/bat.js"
+  } }
+node_modules/pkg/sub/bat.js:
+  invalid syntax
+node_modules/baz/index.js:
+  input.works = true
+</pre></td>
+<td>🚫</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>🚫</td>
+</tr>
 <tr><td>Percent handled:</td>
-<td>100.0%</td>
-<td>77.8%</td>
-<td>70.4%</td>
-<td>63.0%</td>
-<td>25.9%</td>
+<td>93.3%</td>
+<td>76.7%</td>
+<td>73.3%</td>
+<td>63.3%</td>
+<td>23.3%</td>
 </tr>
 </table>
 
